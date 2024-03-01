@@ -1,3 +1,8 @@
+#===========================================
+# Test of TEAPOT functions for tracking and
+# possible memory leaks.
+#===========================================
+
 import posix
 
 from orbit import teapot
@@ -6,16 +11,25 @@ from orbit.teapot import teapot
 
 print "Start."
 
-b = Bunch()
+b_init = Bunch()
+syncPart = b_init.getSyncParticle()
+#energy in GeV
+energy = 1.0                          
+syncPart.kinEnergy(energy)
+
 nParts = 100000
 for i in xrange(nParts):
-	b.addParticle(0.1+i,0.2+i,0.3+i,0.4+i,0.5+i,0.6+i)
+	b_init.addParticle(0.1+i,0.2+i,0.3+i,0.4+i,0.5+i,0.6+i)
 
-print "n parts.=",nParts
-print "Start Tracking."
+print "n parts.  =",nParts
+print "mass[GeV] = ",b_init.mass()
+print "charge    = ",b_init.charge()
+print "======== Start Tracking ========="
 
 count = 0
 while(1< 2):
+	b = Bunch()
+	b_init.copyBunchTo(b)
 	ring_length = 100.
 	b.ringwrap(ring_length)
 	#------------------------------------
